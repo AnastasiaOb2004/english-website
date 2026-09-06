@@ -95,15 +95,12 @@ addScrollStyles();
 const pictureContainer = document.querySelector('#pictures-slider');
 
 const images = [
-    'images/teacher-1.jpg',
     'images/teacher-2.jpg',
-    'images/teacher-3.jpg',
     'images/teacher-4.jpeg',
     'images/teacher-5.jpg',
     'images/teacher-6.jpg',
     'images/teacher-7.jpg',
     'images/teacher-8.jpg',
-    'images/teacher-9.jpg',
 ];
 
 const promiseArray = [];
@@ -114,17 +111,6 @@ for (const image of images) {
         imageHTML.classList.add('pictures');
         imageHTML.style.display = 'none';
         imageHTML.src = image;
-
-        const arrayOfLoadingGifs = document.querySelectorAll('.loading-gif');
-
-        if (window.innerWidth <= 992) {
-            arrayOfLoadingGifs[0].style.display = 'flex';
-        } else {
-            for (let i = 0; i < arrayOfLoadingGifs.length; i++) {
-                arrayOfLoadingGifs[i].style.display = 'flex';
-            }
-        }
-
 
         imageHTML.addEventListener('load', () => {
             resolve();
@@ -142,8 +128,7 @@ for (const image of images) {
 
 const picturesDisplayed = [];
 
-setTimeout(() => {
-    Promise.all(promiseArray).then(
+Promise.all(promiseArray).then(
         function () {
             const pictures = document.querySelectorAll('.pictures');
             if (window.innerWidth <= 992) {
@@ -154,17 +139,12 @@ setTimeout(() => {
                 }
             }
 
-            document.querySelectorAll('.loading-gif').forEach((gif) => {
-                gif.style.display = 'none';
-            });
-
             findIndex();
         },
         function () {
             alert('Error occured while loading images');
         }
     )
-}, 5000);
 
 //Лабораторна 5
 const pictures = document.querySelectorAll('.pictures');
@@ -669,4 +649,140 @@ document.querySelector('#input-page-blank').addEventListener('submit', function 
         })
     }
 
+});
+
+// ================= MOBILE FIXES =================
+
+/* The burger toggle sets `right` to a transition string, so the panel snaps
+   instead of sliding. Set a real transition once. */
+if (hiddenMenu) {
+    hiddenMenu.style.transition = 'right 0.4s ease-in-out, top 0.3s ease-in-out';
+}
+
+/* Close the menu on link tap and on tap outside */
+function isMenuOpen() {
+    return hiddenMenu && parseInt(hiddenMenu.style.right || '-300', 10) >= 0;
+}
+
+function closeMenu() {
+    if (isMenuOpen()) burgerMenu.click(); // keeps the original isClicked flag in sync
+}
+
+if (hiddenMenu && burgerMenu) {
+    hiddenMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!isMenuOpen()) return;
+        if (hiddenMenu.contains(event.target) || burgerMenu.contains(event.target)) return;
+        closeMenu();
+    });
+}
+
+/* Slider: the old version crashes at exactly 992px (mobile shows 1 image but
+   previousSlide reads indexArrays[3]). This version works with any count. */
+function nextSlide() {
+    if (!indexArrays.length) return;
+    if (indexArrays[indexArrays.length - 1] >= pictures.length - 1) {
+        isEndNext = true;
+        return;
+    }
+    pictures[indexArrays[0]].style.display = 'none';
+    for (let i = 0; i < indexArrays.length; i++) {
+        indexArrays[i] += 1;
+        pictures[indexArrays[i]].style.display = 'flex';
+    }
+    isEndBefore = false;
+    isEndNext = indexArrays[indexArrays.length - 1] >= pictures.length - 1;
+}
+
+function previousSlide() {
+    if (!indexArrays.length) return;
+    if (indexArrays[0] <= 0) {
+        isEndBefore = true;
+        return;
+    }
+    pictures[indexArrays[indexArrays.length - 1]].style.display = 'none';
+    for (let i = 0; i < indexArrays.length; i++) {
+        indexArrays[i] -= 1;
+        pictures[indexArrays[i]].style.display = 'flex';
+    }
+    isEndNext = false;
+    isEndBefore = indexArrays[0] <= 0;
+}
+
+/* Swipe through the teacher photos */
+const sliderEl = document.querySelector('#pictures-slider');
+let touchStartX = 0;
+
+if (sliderEl) {
+    sliderEl.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    sliderEl.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) < 50) return;
+        if (diff < 0 && !isEndNext) nextSlide();
+        if (diff > 0 && !isEndBefore) previousSlide();
+    }, { passive: true });
+}
+
+/* Highlight the active level thumbnail (they are visible on mobile now) */
+const levelThumbs = document.querySelectorAll('.secondary-lesson-images');
+
+function markActiveThumb(index) {
+    levelThumbs.forEach((img, i) => {
+        img.style.opacity = i === index ? '1' : '0.5';
+        img.style.borderColor = i === index ? 'rgba(1, 211, 75, 0.9)' : '#ffffff';
+    });
+}
+
+if (window.innerWidth <= 992) {
+    markActiveThumb(0);
+    document.querySelector('#thumbs').addEventListener('click', (event) => {
+        const item = event.target.closest('li');
+        if (!item) return;
+        const all = Array.from(document.querySelector('#thumbs').children);
+        markActiveThumb(all.indexOf(item));
+    });
+}
+
+/* The lesson number input alerts on every keystroke while typing (e.g. after
+   deleting a digit). Validate on blur instead. */
+const lessonsInput = document.querySelector('#number-lessons-p input[type="number"]');
+
+if (lessonsInput) {
+    const freshInput = lessonsInput.cloneNode(true); // drops the old noisy listener
+    lessonsInput.parentNode.replaceChild(freshInput, lessonsInput);
+
+    freshInput.addEventListener('input', () => {
+        const value = parseInt(freshInput.value, 10);
+        if (value >= 1 && value <= 100) numberOfLessons = value;
+    });
+
+    freshInput.addEventListener('blur', () => {
+        const value = parseInt(freshInput.value, 10);
+        if (isNaN(value) || value < 1 || value > 100) {
+            freshInput.value = 1;
+            numberOfLessons = 1;
+        }
+    });
+}
+
+/* The burger/scroll setup runs once at load, so rotating the phone or crossing
+   992px leaves the header in the wrong state. Reload only on that crossing. */
+let wasMobile = window.innerWidth <= 992;
+let resizeTimer;
+
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        const isMobile = window.innerWidth <= 992;
+        if (isMobile !== wasMobile) {
+            wasMobile = isMobile;
+            location.reload();
+        }
+    }, 250);
 });

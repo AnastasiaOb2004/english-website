@@ -1050,3 +1050,285 @@
           transform: translateY(200px);
         }
       }
+
+      /* ================= MOBILE FIXES ================= */
+/* Note: your existing block breaks at 768px, but the JS shows the burger
+   at 992px. These rules use 992px so the two match. */
+
+@media (max-width: 992px) {
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* ---- Header ---- */
+    #log-in-btn, #sign-up-btn { display: none; }
+    #burger-menu { display: flex; right: 10px; }
+    #logo { width: 40px; }
+    #course-title { font-size: 20px; margin-left: 10px; }
+
+    #hidden-menu {
+        width: 300px;
+        max-width: 80vw;
+        height: auto;
+        padding: 10px 0 25px;
+        box-shadow: -2px 2px 12px rgba(0, 0, 0, 0.25);
+    }
+    #hidden-menu ul li { margin: 22px 20px; }
+    #hidden-menu ul li a { font-size: 17px; }
+
+    /* ---- Intro ---- */
+    #introduction-page {
+        top: 0;
+        height: auto;
+        min-height: 100svh;
+        padding: 110px 20px 60px;
+        text-align: center;
+    }
+    #intro-text { font-size: 1.6em; margin: 0 0 10px; }
+    #intro-text-description { font-size: 1em; line-height: 1.6; }
+    #intro-text-description br { display: none; }
+    #intro-start-btn { padding: 14px 30px; }
+
+    /* ---- Info cards ---- */
+    #info-page { height: auto; padding: 45px 16px 55px; }
+    #info-page-text-container {
+        height: auto;
+        margin: 0 0 25px;
+        text-align: center;
+    }
+    #info-page-text { font-size: 1.6em; margin: 0; }
+
+    #info-page-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 0;
+    }
+    #info-page-list div {
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        padding: 14px 75px 14px 5px;
+    }
+    #info-page-list span {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        width: 45px;
+    }
+    #info-page-list span img { width: 45px; height: auto; }
+    #info-page-start-btn-container { margin-top: 30px; }
+
+    /* ---- Teachers slider ---- */
+    #pictures-page {
+        height: auto;
+        margin-top: 0;
+        padding: 45px 16px 55px;
+    }
+    #pictures-title { font-size: 1.5em; margin-bottom: 20px; }
+    #pictures-slider {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
+    .pictures { height: 260px; margin: 0; object-position: center top;  }
+    .loading-gif { margin: 60px auto; }
+    .arrow-btns { width: 44px; height: 44px; }
+    #next-arrow { right: 8px; }
+    #previous-arrow { left: 8px; }
+
+    /* ---- Consultation form ---- */
+    #input-page-title {
+        margin: 45px 16px 15px;
+        font-size: 1.5em;
+        text-align: center;
+    }
+    #input-page {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 0 16px 50px;
+    }
+    #input-page-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        height: auto;
+        width: 100%;
+        max-width: 500px;
+        margin: 0;
+    }
+    .input-page-elements { align-items: flex-start; }
+    .input-page-el-texts { font-size: 1em; line-height: 1.5; }
+    .input-page-icon-containers { flex-shrink: 0; width: 30px; height: 30px; }
+    .input-page-icons { font-size: 32px; }
+
+    #input-page-blank {
+        position: static;
+        width: 100%;
+        max-width: 500px;
+        margin: 35px 0 0;
+        padding: 25px 18px;
+    }
+    #blank-title { margin-left: 0; text-align: center; }
+    .blank-inputs {
+        width: 100%;
+        margin: 5px 0;
+        font-size: 16px;   /* stops iOS zooming in on focus */
+    }
+    #blank-submit-btn { width: 100%; }
+
+    /* ---- Lesson / levels ---- */
+    #lesson-page {
+        height: auto;
+        padding: 40px 16px 50px;
+        text-align: center;
+    }
+    #lesson-page-title { font-size: 1.5em; margin: 0 0 20px; }
+
+    #level-part {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 6px;
+    }
+    #level-part::before { display: none; }
+    .levels {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: auto;
+        margin: 4px 6px;
+    }
+    .levels-checkers { width: 8px; height: 8px; border-width: 3px; }
+    .levels-texts {
+        left: 0 !important;
+        width: auto;
+        font-size: 0.8em;
+        margin: 0;
+    }
+
+    /* the hidden thumbnails become the level picker on mobile */
+    #thumbs {
+        position: static;
+        width: 100%;
+        left: 0;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 15px;
+    }
+    .secondary-lesson-images {
+        visibility: visible;
+        width: 52px;
+        height: 52px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid #ffffff;
+        cursor: pointer;
+    }
+
+    #lesson-page-info {
+        width: 100%;
+        height: auto;
+        padding: 25px 20px 30px;
+        margin-top: 25px;
+        align-items: center;
+        text-align: left;
+    }
+    #lesson-content { width: 100%; align-items: flex-start; }
+    #lesson-page-title-a1 { margin-top: 0; font-size: 1.3em; }
+    #lesson-page-short-data {
+        width: 100%;
+        left: 0;
+    }
+    #lesson-page-tasks-num { margin-left: 10px; }
+    .lesson-page-short-infos { width: auto; font-size: 0.9em; }
+    #lesson-page-data {
+        width: 100%;
+        left: 0;
+        font-size: 0.95em;
+        line-height: 1.55;
+    }
+    #lesson-page-image-1-container { width: 100%; margin-top: 15px; }
+    .lesson-page-images {
+        position: static;
+        width: 100%;
+        max-width: 320px;
+        left: 0;
+        top: 0;
+    }
+    #lesson-page-start-btn { margin-top: 30px; }
+
+    /* ---- Price calculator ---- */
+    #calculator-page {
+        height: auto;
+        padding: 45px 16px 55px;
+    }
+    .calculator-titles { font-size: 1.5em; }
+    #calculator-page-subtitle { font-size: 1.15em; margin-bottom: 25px; }
+
+    #calculator {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    #calculator-input { padding: 25px 18px 30px; }
+    .calculator-input-ps { font-size: 1.05em; margin: 20px 0 10px; }
+    #teacher-inputs {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        text-align: left;
+    }
+    #teacher-inputs br { display: none; }
+    #native-teacher-radio { margin-left: 0; }
+    #teacher-inputs label { margin-left: 8px; }
+
+    #range-container {
+        width: 100%;
+        transform: none;
+        margin: 15px 0 45px;
+    }
+    #level-type-p { margin-top: 25px; }
+    #number-lessons-p, #discount-p {
+        margin: 0 0 15px;
+        font-size: 1em;
+        text-align: left;
+    }
+    .text-inputs {
+        width: 90px;
+        font-size: 16px;
+    }
+    #count-btn { width: 100%; max-width: 260px; margin: 20px 0 0; }
+
+    #calculator-output { padding: 20px 0 25px; }
+    #calculator-output-content { width: 100%; padding: 25px 15px; }
+    .output-titles { font-size: 1em; }
+    .results-entered { font-size: 1.25em; margin: 5px 0 20px; }
+
+    /* ---- Footer ---- */
+    footer { padding: 20px 16px 0; }
+    #footer-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    #footer-language-switcher { right: 0; }
+    #footer-arrow-top-btn {
+        position: static;
+        transform: none;
+        display: block;
+        margin: 25px auto 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #intro-text { font-size: 1.35em; }
+    .pictures { height: 220px; }
+    #footer-content { grid-template-columns: 1fr; }
+    .secondary-lesson-images { width: 46px; height: 46px; }
+}
